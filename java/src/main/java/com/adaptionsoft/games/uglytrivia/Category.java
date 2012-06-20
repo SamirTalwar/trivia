@@ -7,8 +7,22 @@ public class Category {
         this.category = category;
     }
 
-    public boolean is(String string) {
-        return category.equals(string);
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof Category)) {
+            return false;
+        }
+
+        Category other = (Category) object;
+        return category.equals(other.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return category.hashCode();
     }
 
     @Override

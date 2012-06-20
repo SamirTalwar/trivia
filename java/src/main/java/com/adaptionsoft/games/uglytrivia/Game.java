@@ -2,16 +2,25 @@ package com.adaptionsoft.games.uglytrivia;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.unmodifiableCollection;
 
 public class Game {
     private final List<Player> players = new ArrayList<>();
 
-    private final LinkedList<Question> popQuestions = new LinkedList<>();
-    private final LinkedList<Question> scienceQuestions = new LinkedList<>();
-    private final LinkedList<Question> sportsQuestions = new LinkedList<>();
-    private final LinkedList<Question> rockQuestions = new LinkedList<>();
+    private final Map<Category, LinkedList<Question>> questions = new HashMap<>();
+    private final Collection<Category> categories = unmodifiableCollection(Arrays.asList(
+            new Category("Pop"),
+            new Category("Science"),
+            new Category("Sports"),
+            new Category("Rock")
+    ));
 
     private final PrintStream out;
 
@@ -20,11 +29,13 @@ public class Game {
 
     public Game(PrintStream out) {
         this.out = out;
-        for (int i = 0; i < 50; i++) {
-            popQuestions.addLast(new Question("Pop Question " + i));
-            scienceQuestions.addLast(new Question("Science Question " + i));
-            sportsQuestions.addLast(new Question("Sports Question " + i));
-            rockQuestions.addLast(new Question("Rock Question " + i));
+
+        for (Category category : categories) {
+            LinkedList<Question> categoryQuestions = new LinkedList<>();
+            for (int i = 0; i < 50; i++) {
+                categoryQuestions.addLast(new Question(category + " Question " + i));
+            }
+            questions.put(category, categoryQuestions);
         }
     }
 
@@ -103,14 +114,7 @@ public class Game {
     private void askQuestion(Player player) {
         Category category = currentCategory(player);
         out.println("The category is " + category);
-        if (category.is("Pop"))
-            out.println(popQuestions.removeFirst());
-        if (category.is("Science"))
-            out.println(scienceQuestions.removeFirst());
-        if (category.is("Sports"))
-            out.println(sportsQuestions.removeFirst());
-        if (category.is("Rock"))
-            out.println(rockQuestions.removeFirst());
+        out.println(questions.get(category).removeFirst());
     }
 
     private Category currentCategory(Player player) {

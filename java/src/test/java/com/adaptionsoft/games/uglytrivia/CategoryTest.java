@@ -2,17 +2,25 @@ package com.adaptionsoft.games.uglytrivia;
 
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 public class CategoryTest {
     @Test public void
-    a_category_matches_against_a_string_containing_its_name() {
-        assertThat(new Category("foo").is("foo"), is(true));
+    a_category_is_equal_to_those_with_the_same_name() {
+        Category a = new Category("foo");
+        Category b = new Category("foo");
+        assertThat(a, is(equalTo(b)));
+        assertThat(a.hashCode(), is(equalTo(b.hashCode())));
     }
 
     @Test public void
-    a_category_does_not_match_against_any_other_string() {
-        assertThat(new Category("foo").is("bar"), is(false));
+    a_category_is_not_equal_to_any_other_category() {
+        Category a = new Category("foo");
+        Category b = new Category("bar");
+        assertThat(a, is(not(equalTo(b))));
+        assertThat(a.hashCode(), is(not(equalTo(b.hashCode()))));
     }
 }
