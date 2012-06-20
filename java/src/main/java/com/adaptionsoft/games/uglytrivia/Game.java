@@ -80,7 +80,7 @@ public class Game {
                 player.inPenaltyBox = false;
                 nextPlayer();
                 showPlayerAnsweredTheQuestionCorrectly(player);
-                return didPlayerWin(player);
+                return player.hasWon();
             } else {
                 nextPlayer();
                 return false;
@@ -88,7 +88,7 @@ public class Game {
         } else {
             nextPlayer();
             showPlayerAnsweredTheQuestionCorrectly(player);
-            return didPlayerWin(player);
+            return player.hasWon();
         }
     }
 
@@ -130,9 +130,5 @@ public class Game {
         out.println("Answer was correct!!!!");
         player.grantAGoldCoin();
         out.println(player.name + " now has " + player.purse() + " Gold Coins.");
-    }
-
-    private boolean didPlayerWin(Player player) {
-        return player.hasWon();
     }
 }
