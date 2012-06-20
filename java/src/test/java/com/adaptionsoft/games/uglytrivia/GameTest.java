@@ -79,6 +79,33 @@ public class GameTest {
         ));
     }
 
+    @Test public void
+    players_are_sent_to_the_penalty_box_for_wrong_answers() {
+        Game game = new Game();
+        game.add("Calvin");
+        game.add("Hobbes");
+
+        flushOutput();
+        game.roll(2);
+        game.wasCorrectlyAnswered();
+        game.roll(1);
+        game.wasCorrectlyAnswered();
+        game.roll(5);
+        game.wrongAnswer();
+
+        assertThat(output(), contains(
+            "Calvin is the current player", "They have rolled a 2",
+            "Calvin's new location is 2", "The category is Sports", "Sports Question 0",
+            "Answer was corrent!!!!", "Calvin now has 1 Gold Coins.",
+            "Hobbes is the current player", "They have rolled a 1",
+            "Hobbes's new location is 1", "The category is Science", "Science Question 0",
+            "Answer was corrent!!!!", "Hobbes now has 1 Gold Coins.",
+            "Calvin is the current player", "They have rolled a 5",
+            "Calvin's new location is 7", "The category is Rock", "Rock Question 0",
+            "Question was incorrectly answered", "Calvin was sent to the penalty box"
+        ));
+    }
+
     private Iterable<String> output() {
         return Arrays.asList(outputStream.toString().replaceFirst("\n$", "").split("\n"));
     }
