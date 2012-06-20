@@ -57,20 +57,17 @@ public class Game {
         out.println("They have rolled a " + roll);
 
         if (player.inPenaltyBox) {
-            if (roll % 2 != 0) {
-                out.println(player.name + " is getting out of the penalty box");
-
-                movePlayerBy(roll, player);
-                return askQuestion(player, answerer);
-            } else {
+            if (roll % 2 == 0) {
                 out.println(player.name + " is not getting out of the penalty box");
                 nextPlayer();
                 return false;
             }
-        } else {
-            movePlayerBy(roll, player);
-            return askQuestion(player, answerer);
+
+            out.println(player.name + " is getting out of the penalty box");
         }
+
+        movePlayerBy(roll, player);
+        return askQuestion(player, answerer);
     }
 
     private boolean askQuestion(Player player, Answerer answerer) {
