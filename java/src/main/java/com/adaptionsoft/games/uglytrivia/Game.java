@@ -5,17 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Game {
-    public class Player {
-        private final String name;
-        private int place = 0;
-        private int purse = 0;
-        private boolean inPenaltyBox = false;
-
-        public Player(String name) {
-            this.name = name;
-        }
-    }
-
     private final List<Player> players = new ArrayList<>();
 
     private final LinkedList<String> popQuestions = new LinkedList<>();
