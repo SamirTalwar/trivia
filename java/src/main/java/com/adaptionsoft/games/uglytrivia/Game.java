@@ -44,12 +44,11 @@ public class Game {
         if (player.inPenaltyBox) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
-
                 out.println(player.name + " is getting out of the penalty box");
+
                 player.incrementPlaceBy(roll);
                 out.println(player.name + "'s new location is " + player.place());
-
-                askQuestion();
+                askQuestion(player);
             } else {
                 out.println(player.name + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
@@ -57,8 +56,7 @@ public class Game {
         } else {
             player.incrementPlaceBy(roll);
             out.println(player.name + "'s new location is " + player.place());
-
-            askQuestion();
+            askQuestion(player);
         }
     }
 
@@ -99,8 +97,8 @@ public class Game {
             currentPlayer = 0;
     }
 
-    private void askQuestion() {
-        String category = currentCategory();
+    private void askQuestion(Player player) {
+        String category = currentCategory(player);
         out.println("The category is " + category);
         if (category == "Pop")
             out.println(popQuestions.removeFirst());
@@ -112,8 +110,8 @@ public class Game {
             out.println(rockQuestions.removeFirst());
     }
 
-    private String currentCategory() {
-        int place = players.get(currentPlayer).place();
+    private String currentCategory(Player player) {
+        int place = player.place();
         if (place == 0) return "Pop";
         if (place == 4) return "Pop";
         if (place == 8) return "Pop";
