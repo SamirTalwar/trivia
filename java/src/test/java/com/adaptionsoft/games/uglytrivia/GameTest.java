@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,32 +13,19 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class GameTest {
-    private final PrintStream originalOut = System.out;
-    private ByteArrayOutputStream outputStream;
-    private PrintStream out;
-
-    @Before public void
-    stub_STDOUT() {
-        outputStream = new ByteArrayOutputStream();
-        out = new PrintStream(outputStream);
-        System.setOut(out);
-    }
-
-    @After public void
-    reset_STDOUT() {
-        System.setOut(originalOut);
-    }
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    private final PrintStream out = new PrintStream(outputStream);
 
     @Test public void
     adds_a_new_player() {
-        Game game = new Game();
+        Game game = new Game(out);
         game.add("Bob");
         assertThat(output(), contains("Bob was added", "They are player number 1"));
     }
 
     @Test public void
     adds_multiple_players() {
-        Game game = new Game();
+        Game game = new Game(out);
         game.add("Julian");
         game.add("Dick");
         game.add("George");
@@ -57,7 +42,7 @@ public class GameTest {
 
     @Test public void
     players_are_asked_questions() {
-        Game game = new Game();
+        Game game = new Game(out);
         game.add("Fred");
         game.add("George");
         game.add("Ron");
@@ -85,7 +70,7 @@ public class GameTest {
 
     @Test public void
     players_are_sent_to_the_penalty_box_for_wrong_answers() {
-        Game game = new Game();
+        Game game = new Game(out);
         game.add("Calvin");
         game.add("Hobbes");
 
@@ -114,7 +99,7 @@ public class GameTest {
     @Test public void
     players_leave_the_penalty_box_when_they_roll_an_odd_number() {
         for (int roll : collectionOf(1, 3)) {
-            Game game = new Game();
+            Game game = new Game(out);
             game.add("Calvin");
             game.add("Hobbes");
 
@@ -142,7 +127,7 @@ public class GameTest {
     @Test public void
     players_stay_in_the_penalty_box_when_they_roll_an_even_number() {
         for (int roll : collectionOf(0, 2)) {
-            Game game = new Game();
+            Game game = new Game(out);
             game.add("Calvin");
             game.add("Hobbes");
 
@@ -168,7 +153,7 @@ public class GameTest {
 
     @Test public void
     the_game_ends_when_a_player_has_six_golden_coins() {
-        Game game = new Game();
+        Game game = new Game(out);
         game.add("Sherlock");
         game.add("John");
 
@@ -194,7 +179,7 @@ public class GameTest {
     }
 
     private void flushOutput() {
-        stub_STDOUT();
+        outputStream.reset();
     }
 
     private static <T> Collection<T> collectionOf(@SuppressWarnings("unchecked") T... items) {

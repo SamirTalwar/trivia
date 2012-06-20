@@ -1,5 +1,6 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,10 +13,13 @@ public class Game {
     private final LinkedList<String> sportsQuestions = new LinkedList<>();
     private final LinkedList<String> rockQuestions = new LinkedList<>();
 
+    private final PrintStream out;
+
     private int currentPlayer = 0;
     private boolean isGettingOutOfPenaltyBox;
 
-    public Game() {
+    public Game(PrintStream out) {
+        this.out = out;
         for (int i = 0; i < 50; i++) {
             popQuestions.addLast("Pop Question " + i);
             scienceQuestions.addLast("Science Question " + i);
@@ -27,35 +31,35 @@ public class Game {
     public boolean add(String playerName) {
         players.add(new Player(playerName));
 
-        System.out.println(playerName + " was added");
-        System.out.println("They are player number " + players.size());
+        out.println(playerName + " was added");
+        out.println("They are player number " + players.size());
         return true;
     }
 
     public void roll(int roll) {
         Player player = players.get(currentPlayer);
-        System.out.println(player.name + " is the current player");
-        System.out.println("They have rolled a " + roll);
+        out.println(player.name + " is the current player");
+        out.println("They have rolled a " + roll);
 
         if (player.inPenaltyBox) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
-                System.out.println(player.name + " is getting out of the penalty box");
+                out.println(player.name + " is getting out of the penalty box");
                 player.incrementPlaceBy(roll);
 
-                System.out.println(player.name + "'s new location is " + player.place());
-                System.out.println("The category is " + currentCategory());
+                out.println(player.name + "'s new location is " + player.place());
+                out.println("The category is " + currentCategory());
                 askQuestion();
             } else {
-                System.out.println(player.name + " is not getting out of the penalty box");
+                out.println(player.name + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
             player.incrementPlaceBy(roll);
 
-            System.out.println(player.name + "'s new location is " + player.place());
-            System.out.println("The category is " + currentCategory());
+            out.println(player.name + "'s new location is " + player.place());
+            out.println("The category is " + currentCategory());
             askQuestion();
         }
     }
@@ -65,9 +69,9 @@ public class Game {
         if (player.inPenaltyBox) {
             if (isGettingOutOfPenaltyBox) {
                 player.inPenaltyBox = false;
-                System.out.println("Answer was correct!!!!");
+                out.println("Answer was correct!!!!");
                 player.purse++;
-                System.out.println(player.name + " now has " + player.purse + " Gold Coins.");
+                out.println(player.name + " now has " + player.purse + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
                 nextPlayer();
@@ -78,9 +82,9 @@ public class Game {
                 return true;
             }
         } else {
-            System.out.println("Answer was correct!!!!");
+            out.println("Answer was correct!!!!");
             player.purse++;
-            System.out.println(player.name + " now has " + player.purse + " Gold Coins.");
+            out.println(player.name + " now has " + player.purse + " Gold Coins.");
 
             boolean winner = didPlayerWin();
             nextPlayer();
@@ -91,8 +95,8 @@ public class Game {
 
     public boolean wrongAnswer() {
         Player player = players.get(currentPlayer);
-        System.out.println("Question was incorrectly answered");
-        System.out.println(player.name + " was sent to the penalty box");
+        out.println("Question was incorrectly answered");
+        out.println(player.name + " was sent to the penalty box");
         player.inPenaltyBox = true;
 
         nextPlayer();
@@ -107,13 +111,13 @@ public class Game {
 
     private void askQuestion() {
         if (currentCategory() == "Pop")
-            System.out.println(popQuestions.removeFirst());
+            out.println(popQuestions.removeFirst());
         if (currentCategory() == "Science")
-            System.out.println(scienceQuestions.removeFirst());
+            out.println(scienceQuestions.removeFirst());
         if (currentCategory() == "Sports")
-            System.out.println(sportsQuestions.removeFirst());
+            out.println(sportsQuestions.removeFirst());
         if (currentCategory() == "Rock")
-            System.out.println(rockQuestions.removeFirst());
+            out.println(rockQuestions.removeFirst());
     }
 
     private String currentCategory() {
