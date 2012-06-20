@@ -49,11 +49,11 @@ public class GameTest {
 
         flushOutput();
         game.roll(1);
-        game.wasCorrectlyAnswered();
+        assertThat(game.wasCorrectlyAnswered(), is(true));
         game.roll(2);
-        game.wasCorrectlyAnswered();
+        assertThat(game.wasCorrectlyAnswered(), is(true));
         game.roll(3);
-        game.wasCorrectlyAnswered();
+        assertThat(game.wasCorrectlyAnswered(), is(true));
 
         assertThat(output(), contains(
             "Fred is the current player", "They have rolled a 1",
@@ -76,11 +76,11 @@ public class GameTest {
 
         flushOutput();
         game.roll(2);
-        game.wasCorrectlyAnswered();
+        assertThat(game.wasCorrectlyAnswered(), is(true));
         game.roll(1);
-        game.wasCorrectlyAnswered();
+        assertThat(game.wasCorrectlyAnswered(), is(true));
         game.roll(1);
-        game.wrongAnswer();
+        assertThat(game.wrongAnswer(), is(true));
 
         assertThat(output(), contains(
             "Calvin is the current player", "They have rolled a 2",
@@ -109,6 +109,7 @@ public class GameTest {
             game.roll(3);
             game.wrongAnswer();
             game.roll(roll);
+            assertThat(game.wrongAnswer(), is(true));
 
             assertThat(output(), contains(
                 equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
@@ -119,7 +120,8 @@ public class GameTest {
                 equalTo("Question was incorrectly answered"), equalTo("Hobbes was sent to the penalty box"),
                 equalTo("Calvin is the current player"), equalTo("They have rolled a " + roll),
                 equalTo("Calvin is getting out of the penalty box"),
-                equalTo("Calvin's new location is " + (roll + 4)), any(String.class), any(String.class)
+                equalTo("Calvin's new location is " + (roll + 4)), any(String.class), any(String.class),
+                equalTo("Question was incorrectly answered"), equalTo("Calvin was sent to the penalty box")
             ));
         }
     }
@@ -137,6 +139,7 @@ public class GameTest {
             game.roll(3);
             game.wrongAnswer();
             game.roll(roll);
+            assertThat(game.wasCorrectlyAnswered(), is(true));
 
             assertThat(output(), contains(
                 "Calvin is the current player", "They have rolled a 4",
