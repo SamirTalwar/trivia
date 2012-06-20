@@ -3,19 +3,18 @@ package com.adaptionsoft.games.uglytrivia;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableList;
 
 public class Game {
     private final List<Player> players = new ArrayList<>();
 
     private final Map<Category, LinkedList<Question>> questions = new HashMap<>();
-    private final Collection<Category> categories = unmodifiableCollection(Arrays.asList(
+    private final List<Category> categories = unmodifiableList(Arrays.asList(
             new Category("Pop"),
             new Category("Science"),
             new Category("Sports"),
@@ -118,22 +117,8 @@ public class Game {
     }
 
     private Category currentCategory(Player player) {
-        Category pop = new Category("Pop");
-        Category science = new Category("Science");
-        Category sports = new Category("Sports");
-        Category rock = new Category("Rock");
-
         int place = player.place();
-        if (place == 0) return pop;
-        if (place == 4) return pop;
-        if (place == 8) return pop;
-        if (place == 1) return science;
-        if (place == 5) return science;
-        if (place == 9) return science;
-        if (place == 2) return sports;
-        if (place == 6) return sports;
-        if (place == 10) return sports;
-        return rock;
+        return categories.get(place % categories.size());
     }
 
     private void showPlayerAnsweredTheQuestionCorrectly(Player player) {
