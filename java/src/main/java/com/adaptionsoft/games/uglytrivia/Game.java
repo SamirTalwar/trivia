@@ -42,11 +42,9 @@ public class Game {
                 isGettingOutOfPenaltyBox = true;
 
                 System.out.println(player.name + " is getting out of the penalty box");
-                player.place = player.place + roll;
-                if (player.place > 11)
-                    player.place = player.place - 12;
+                player.incrementPlaceBy(roll);
 
-                System.out.println(player.name + "'s new location is " + player.place);
+                System.out.println(player.name + "'s new location is " + player.place());
                 System.out.println("The category is " + currentCategory());
                 askQuestion();
             } else {
@@ -54,11 +52,9 @@ public class Game {
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
-            player.place = player.place + roll;
-            if (player.place > 11)
-                player.place = player.place - 12;
+            player.incrementPlaceBy(roll);
 
-            System.out.println(player.name + "'s new location is " + player.place);
+            System.out.println(player.name + "'s new location is " + player.place());
             System.out.println("The category is " + currentCategory());
             askQuestion();
         }
@@ -121,7 +117,7 @@ public class Game {
     }
 
     private String currentCategory() {
-        int place = players.get(currentPlayer).place;
+        int place = players.get(currentPlayer).place();
         if (place == 0) return "Pop";
         if (place == 4) return "Pop";
         if (place == 8) return "Pop";
