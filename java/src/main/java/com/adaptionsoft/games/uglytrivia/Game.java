@@ -77,16 +77,16 @@ public class Game {
         if (player.inPenaltyBox) {
             if (isGettingOutOfPenaltyBox) {
                 player.inPenaltyBox = false;
-                showPlayerAnsweredTheQuestionCorrectly(player);
                 nextPlayer();
+                showPlayerAnsweredTheQuestionCorrectly(player);
                 return didPlayerWin(player);
             } else {
                 nextPlayer();
                 return false;
             }
         } else {
-            showPlayerAnsweredTheQuestionCorrectly(player);
             nextPlayer();
+            showPlayerAnsweredTheQuestionCorrectly(player);
             return didPlayerWin(player);
         }
     }
