@@ -49,11 +49,11 @@ public class GameTest {
 
         flushOutput();
         game.roll(1);
-        assertThat(game.answerCorrectly(), is(true));
+        assertThat(game.answerCorrectly(), is(false));
         game.roll(2);
-        assertThat(game.answerCorrectly(), is(true));
+        assertThat(game.answerCorrectly(), is(false));
         game.roll(3);
-        assertThat(game.answerCorrectly(), is(true));
+        assertThat(game.answerCorrectly(), is(false));
 
         assertThat(output(), contains(
             "Fred is the current player", "They have rolled a 1",
@@ -76,11 +76,11 @@ public class GameTest {
 
         flushOutput();
         game.roll(2);
-        assertThat(game.answerCorrectly(), is(true));
+        assertThat(game.answerCorrectly(), is(false));
         game.roll(1);
-        assertThat(game.answerCorrectly(), is(true));
+        assertThat(game.answerCorrectly(), is(false));
         game.roll(1);
-        assertThat(game.answerIncorrectly(), is(true));
+        assertThat(game.answerIncorrectly(), is(false));
 
         assertThat(output(), contains(
             "Calvin is the current player", "They have rolled a 2",
@@ -109,7 +109,7 @@ public class GameTest {
             game.roll(3);
             game.answerIncorrectly();
             game.roll(roll);
-            assertThat(game.answerCorrectly(), is(true));
+            assertThat(game.answerCorrectly(), is(false));
 
             assertThat(output(), contains(
                 equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
@@ -140,7 +140,7 @@ public class GameTest {
             game.roll(3);
             game.answerIncorrectly();
             game.roll(roll);
-            assertThat(game.answerIncorrectly(), is(true));
+            assertThat(game.answerIncorrectly(), is(false));
 
             assertThat(output(), contains(
                 equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
@@ -170,7 +170,7 @@ public class GameTest {
             game.roll(3);
             game.answerIncorrectly();
             game.roll(roll);
-            assertThat(game.answerCorrectly(), is(true));
+            assertThat(game.answerCorrectly(), is(false));
 
             assertThat(output(), contains(
                 "Calvin is the current player", "They have rolled a 4",
@@ -198,7 +198,7 @@ public class GameTest {
         game.roll(1); game.answerCorrectly();      game.roll(3); game.answerCorrectly();
         game.roll(1); game.answerCorrectly();      game.roll(1); game.answerCorrectly();
         flushOutput();
-        game.roll(0); assertThat(game.answerCorrectly(), is(false));
+        game.roll(0); assertThat(game.answerCorrectly(), is(true));
 
         System.err.println(output());
         assertThat(output(), contains(

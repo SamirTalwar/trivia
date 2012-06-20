@@ -77,7 +77,7 @@ public class Game {
                 return winner;
             } else {
                 nextPlayer();
-                return true;
+                return false;
             }
         } else {
             out.println("Answer was correct!!!!");
@@ -100,7 +100,7 @@ public class Game {
         }
 
         nextPlayer();
-        return true;
+        return false;
     }
 
     private void nextPlayer() {
@@ -137,6 +137,6 @@ public class Game {
     }
 
     private boolean didPlayerWin() {
-        return !(players.get(currentPlayer).purse == 6);
+        return players.get(currentPlayer).purse == 6;
     }
 }
