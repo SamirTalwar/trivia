@@ -46,16 +46,14 @@ public class Game {
                 isGettingOutOfPenaltyBox = true;
                 out.println(player.name + " is getting out of the penalty box");
 
-                player.incrementPlaceBy(roll);
-                out.println(player.name + "'s new location is " + player.place());
+                movePlayerBy(roll, player);
                 askQuestion(player);
             } else {
                 out.println(player.name + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
-            player.incrementPlaceBy(roll);
-            out.println(player.name + "'s new location is " + player.place());
+            movePlayerBy(roll, player);
             askQuestion(player);
         }
     }
@@ -95,6 +93,11 @@ public class Game {
         currentPlayer++;
         if (currentPlayer == players.size())
             currentPlayer = 0;
+    }
+
+    private void movePlayerBy(int roll, Player player) {
+        player.incrementPlaceBy(roll);
+        out.println(player.name + "'s new location is " + player.place());
     }
 
     private void askQuestion(Player player) {
