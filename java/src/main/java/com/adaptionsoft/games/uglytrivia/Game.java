@@ -83,14 +83,13 @@ public class Game {
         out.println(question);
         Answer answer = answerer.answer(question);
         if (answer == Answer.Correct) {
-            return answerCorrectly();
+            return answerCorrectly(player);
         } else {
-            return answerIncorrectly();
+            return answerIncorrectly(player);
         }
     }
 
-    private boolean answerCorrectly() {
-        Player player = players.get(currentPlayer);
+    private boolean answerCorrectly(Player player) {
         if (player.inPenaltyBox) {
             if (isGettingOutOfPenaltyBox) {
                 player.inPenaltyBox = false;
@@ -108,8 +107,7 @@ public class Game {
         }
     }
 
-    private boolean answerIncorrectly() {
-        Player player = players.get(currentPlayer);
+    private boolean answerIncorrectly(Player player) {
         if (!player.inPenaltyBox || isGettingOutOfPenaltyBox) {
             out.println("Question was incorrectly answered");
             out.println(player.name + " was sent to the penalty box");
