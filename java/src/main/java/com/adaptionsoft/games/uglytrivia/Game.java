@@ -38,7 +38,6 @@ public class Game {
     private final PrintStream out;
 
     private int currentPlayer = 0;
-    private boolean isGettingOutOfPenaltyBox;
 
     public Game(PrintStream out) {
         this.out = out;
@@ -59,13 +58,11 @@ public class Game {
 
         if (player.inPenaltyBox) {
             if (roll % 2 != 0) {
-                isGettingOutOfPenaltyBox = true;
                 out.println(player.name + " is getting out of the penalty box");
 
                 movePlayerBy(roll, player);
                 return askQuestion(player, answerer);
             } else {
-                isGettingOutOfPenaltyBox = false;
                 out.println(player.name + " is not getting out of the penalty box");
                 nextPlayer();
                 return false;
@@ -90,30 +87,18 @@ public class Game {
     }
 
     private boolean answerCorrectly(Player player) {
-        if (player.inPenaltyBox) {
-            if (isGettingOutOfPenaltyBox) {
-                player.inPenaltyBox = false;
-                nextPlayer();
-                showPlayerAnsweredTheQuestionCorrectly(player);
-                return player.hasWon();
-            } else {
-                nextPlayer();
-                return false;
-            }
-        } else {
-            nextPlayer();
-            showPlayerAnsweredTheQuestionCorrectly(player);
-            return player.hasWon();
-        }
+        player.inPenaltyBox = false;
+        out.println("Answer was correct!!!!");
+        player.grantAGoldCoin();
+        out.println(player.name + " now has " + player.purse() + " Gold Coins.");
+        nextPlayer();
+        return player.hasWon();
     }
 
     private boolean answerIncorrectly(Player player) {
-        if (!player.inPenaltyBox || isGettingOutOfPenaltyBox) {
-            out.println("Question was incorrectly answered");
-            out.println(player.name + " was sent to the penalty box");
-            player.inPenaltyBox = true;
-        }
-
+        out.println("Question was incorrectly answered");
+        out.println(player.name + " was sent to the penalty box");
+        player.inPenaltyBox = true;
         nextPlayer();
         return false;
     }
@@ -132,11 +117,5 @@ public class Game {
     private Category currentCategory(Player player) {
         int place = player.place();
         return categories.get(place % categories.size());
-    }
-
-    private void showPlayerAnsweredTheQuestionCorrectly(Player player) {
-        out.println("Answer was correct!!!!");
-        player.grantAGoldCoin();
-        out.println(player.name + " now has " + player.purse() + " Gold Coins.");
     }
 }
