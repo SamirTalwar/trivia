@@ -12,6 +12,7 @@ import static java.util.Collections.unmodifiableList;
 
 public class Game {
     public static final int PLACES = 12;
+    public static final int GOLD_COINS_NEEDED_TO_WIN = 6;
 
     private final List<Player> players = new ArrayList<>();
 
@@ -127,11 +128,11 @@ public class Game {
 
     private void showPlayerAnsweredTheQuestionCorrectly(Player player) {
         out.println("Answer was correct!!!!");
-        player.purse++;
-        out.println(player.name + " now has " + player.purse + " Gold Coins.");
+        player.grantAGoldCoin();
+        out.println(player.name + " now has " + player.purse() + " Gold Coins.");
     }
 
     private boolean didPlayerWin(Player player) {
-        return player.purse == 6;
+        return player.hasWon();
     }
 }
