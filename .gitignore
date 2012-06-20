@@ -1,4 +1,4 @@
-scala/.idea/
+java/bin
+scala/.idea
 scala/scala.iml
-scala/out/
-*.class
+scala/out
