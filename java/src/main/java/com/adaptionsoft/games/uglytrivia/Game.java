@@ -67,27 +67,17 @@ public class Game {
         if (player.inPenaltyBox) {
             if (isGettingOutOfPenaltyBox) {
                 player.inPenaltyBox = false;
-                out.println("Answer was correct!!!!");
-                player.purse++;
-                out.println(player.name + " now has " + player.purse + " Gold Coins.");
-
-                boolean winner = didPlayerWin();
+                showPlayerAnsweredTheQuestionCorrectly(player);
                 nextPlayer();
-
-                return winner;
+                return didPlayerWin(player);
             } else {
                 nextPlayer();
                 return false;
             }
         } else {
-            out.println("Answer was correct!!!!");
-            player.purse++;
-            out.println(player.name + " now has " + player.purse + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
+            showPlayerAnsweredTheQuestionCorrectly(player);
             nextPlayer();
-
-            return winner;
+            return didPlayerWin(player);
         }
     }
 
@@ -136,7 +126,13 @@ public class Game {
         return "Rock";
     }
 
-    private boolean didPlayerWin() {
-        return players.get(currentPlayer).purse == 6;
+    private void showPlayerAnsweredTheQuestionCorrectly(Player player) {
+        out.println("Answer was correct!!!!");
+        player.purse++;
+        out.println(player.name + " now has " + player.purse + " Gold Coins.");
+    }
+
+    private boolean didPlayerWin(Player player) {
+        return player.purse == 6;
     }
 }
