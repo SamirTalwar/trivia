@@ -57,7 +57,7 @@ public class Game {
         out.println(player.name + " is the current player");
         out.println("They have rolled a " + roll);
 
-        if (player.inPenaltyBox) {
+        if (player.isInPenaltyBox()) {
             if (roll % 2 == 0) {
                 out.println(player.name + " is not getting out of the penalty box");
                 nextPlayer();
@@ -85,7 +85,7 @@ public class Game {
     }
 
     private boolean answerCorrectly(Player player) {
-        player.inPenaltyBox = false;
+        player.moveOutOfPenaltyBox();
         out.println("Answer was correct!!!!");
         player.grantAGoldCoin();
         out.println(player.name + " now has " + player.purse() + " Gold Coins.");
@@ -96,7 +96,7 @@ public class Game {
     private boolean answerIncorrectly(Player player) {
         out.println("Question was incorrectly answered");
         out.println(player.name + " was sent to the penalty box");
-        player.inPenaltyBox = true;
+        player.moveIntoPenaltyBox();
         nextPlayer();
         return false;
     }

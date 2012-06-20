@@ -4,7 +4,7 @@ public class Player {
     public final String name;
     private int place = 0;
     private int purse = 0;
-    public boolean inPenaltyBox = false;
+    private boolean isInPenaltyBox = false;
 
     public Player(String name) {
         this.name = name;
@@ -19,6 +19,18 @@ public class Player {
         if (place >= Game.PLACES) {
             place -= Game.PLACES;
         }
+    }
+
+    public boolean isInPenaltyBox() {
+        return isInPenaltyBox;
+    }
+
+    public void moveIntoPenaltyBox() {
+        isInPenaltyBox = true;
+    }
+
+    public void moveOutOfPenaltyBox() {
+        isInPenaltyBox = false;
     }
 
     public int purse() {

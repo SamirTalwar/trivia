@@ -34,6 +34,23 @@ public class PlayerTest {
     }
 
     @Test public void
+    starts_outside_of_the_penalty_box() {
+        assertThat(player.isInPenaltyBox(), is(false));
+    }
+
+    @Test public void
+    can_be_moved_into_the_penalty_box() {
+        player.moveIntoPenaltyBox();
+        assertThat(player.isInPenaltyBox(), is(true));
+    }
+
+    @Test public void
+    can_be_moved_out_of_the_penalty_box() {
+        player.moveOutOfPenaltyBox();
+        assertThat(player.isInPenaltyBox(), is(false));
+    }
+
+    @Test public void
     starts_with_no_coins() {
         assertThat(player.purse(), is(0));
     }
