@@ -103,8 +103,9 @@ public class Game {
 
     private void nextPlayer() {
         currentPlayer++;
-        if (currentPlayer == players.size())
+        if (currentPlayer == players.size()) {
             currentPlayer = 0;
+        }
     }
 
     private void movePlayerBy(int roll, Player player) {
