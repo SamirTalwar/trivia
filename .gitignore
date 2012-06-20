@@ -1,4 +1,6 @@
-java/bin
+java/.classpath
+java/.project
+java/target
 scala/.idea
 scala/scala.iml
 scala/out
