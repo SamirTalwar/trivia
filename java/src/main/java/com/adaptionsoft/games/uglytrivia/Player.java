@@ -16,8 +16,8 @@ public class Player {
 
     public void incrementPlaceBy(int roll) {
         place += roll;
-        if (place > 11) {
-            place -= 12;
+        if (place >= Game.PLACES) {
+            place -= Game.PLACES;
         }
     }
 }

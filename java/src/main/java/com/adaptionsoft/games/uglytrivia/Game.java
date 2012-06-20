@@ -11,6 +11,8 @@ import java.util.Map;
 import static java.util.Collections.unmodifiableList;
 
 public class Game {
+    public static final int PLACES = 12;
+
     private final List<Player> players = new ArrayList<>();
 
     private final Map<Category, LinkedList<Question>> questions = new HashMap<>();
