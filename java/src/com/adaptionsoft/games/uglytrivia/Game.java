@@ -2,17 +2,18 @@ package com.adaptionsoft.games.uglytrivia;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Game {
-    ArrayList players = new ArrayList();
+    List<String> players = new ArrayList<>();
     int[] places = new int[6];
     int[] purses  = new int[6];
     boolean[] inPenaltyBox  = new boolean[6];
 
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
+    LinkedList<String> popQuestions = new LinkedList<>();
+    LinkedList<String> scienceQuestions = new LinkedList<>();
+    LinkedList<String> sportsQuestions = new LinkedList<>();
+    LinkedList<String> rockQuestions = new LinkedList<>();
 
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
@@ -20,8 +21,8 @@ public class Game {
     public Game() {
         for (int i = 0; i < 50; i++) {
             popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast(("Science Question " + i));
-            sportsQuestions.addLast(("Sports Question " + i));
+            scienceQuestions.addLast("Science Question " + i);
+            sportsQuestions.addLast("Sports Question " + i);
             rockQuestions.addLast(createRockQuestion(i));
         }
     }
