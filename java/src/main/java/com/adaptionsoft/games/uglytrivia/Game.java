@@ -1,5 +1,6 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import com.adaptionsoft.games.uglytrivia.Answerer.Answer;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class Game {
         return true;
     }
 
-    public void roll(int roll) {
+    public boolean move(int roll, Answerer answerer) {
         Player player = players.get(currentPlayer);
         out.println(player.name + " is the current player");
         out.println("They have rolled a " + roll);
@@ -62,18 +63,33 @@ public class Game {
                 out.println(player.name + " is getting out of the penalty box");
 
                 movePlayerBy(roll, player);
-                askQuestion(player);
+                return askQuestion(player, answerer);
             } else {
                 isGettingOutOfPenaltyBox = false;
                 out.println(player.name + " is not getting out of the penalty box");
+                nextPlayer();
+                return false;
             }
         } else {
             movePlayerBy(roll, player);
-            askQuestion(player);
+            return askQuestion(player, answerer);
         }
     }
 
-    public boolean answerCorrectly() {
+    private boolean askQuestion(Player player, Answerer answerer) {
+        Category category = currentCategory(player);
+        out.println("The category is " + category);
+        Question question = questions.get(category).removeFirst();
+        out.println(question);
+        Answer answer = answerer.answer(question);
+        if (answer == Answer.Correct) {
+            return answerCorrectly();
+        } else {
+            return answerIncorrectly();
+        }
+    }
+
+    private boolean answerCorrectly() {
         Player player = players.get(currentPlayer);
         if (player.inPenaltyBox) {
             if (isGettingOutOfPenaltyBox) {
@@ -92,7 +108,7 @@ public class Game {
         }
     }
 
-    public boolean answerIncorrectly() {
+    private boolean answerIncorrectly() {
         Player player = players.get(currentPlayer);
         if (!player.inPenaltyBox || isGettingOutOfPenaltyBox) {
             out.println("Question was incorrectly answered");
@@ -113,12 +129,6 @@ public class Game {
     private void movePlayerBy(int roll, Player player) {
         player.incrementPlaceBy(roll);
         out.println(player.name + "'s new location is " + player.place());
-    }
-
-    private void askQuestion(Player player) {
-        Category category = currentCategory(player);
-        out.println("The category is " + category);
-        out.println(questions.get(category).removeFirst());
     }
 
     private Category currentCategory(Player player) {

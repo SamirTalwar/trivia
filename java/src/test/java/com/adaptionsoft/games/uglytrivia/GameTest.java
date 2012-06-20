@@ -13,6 +13,17 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class GameTest {
+    private static final Answerer answerCorrectly = new Answerer() {
+        @Override public Answer answer(Question question) {
+            return Answer.Correct;
+        }
+    };
+    private static final Answerer answerIncorrectly = new Answerer() {
+        @Override public Answer answer(Question question) {
+            return Answer.Incorrect;
+        }
+    };
+
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private final PrintStream out = new PrintStream(outputStream);
 
@@ -48,12 +59,9 @@ public class GameTest {
         game.add("Ron");
 
         flushOutput();
-        game.roll(1);
-        assertThat(game.answerCorrectly(), is(false));
-        game.roll(2);
-        assertThat(game.answerCorrectly(), is(false));
-        game.roll(3);
-        assertThat(game.answerCorrectly(), is(false));
+        assertThat(game.move(1, answerCorrectly), is(false));
+        assertThat(game.move(2, answerCorrectly), is(false));
+        assertThat(game.move(3, answerCorrectly), is(false));
 
         assertThat(output(), contains(
             "Fred is the current player", "They have rolled a 1",
@@ -75,12 +83,9 @@ public class GameTest {
         game.add("Hobbes");
 
         flushOutput();
-        game.roll(2);
-        assertThat(game.answerCorrectly(), is(false));
-        game.roll(1);
-        assertThat(game.answerCorrectly(), is(false));
-        game.roll(1);
-        assertThat(game.answerIncorrectly(), is(false));
+        assertThat(game.move(2, answerCorrectly), is(false));
+        assertThat(game.move(1, answerCorrectly), is(false));
+        assertThat(game.move(1, answerIncorrectly), is(false));
 
         assertThat(output(), contains(
             "Calvin is the current player", "They have rolled a 2",
@@ -104,12 +109,9 @@ public class GameTest {
             game.add("Hobbes");
 
             flushOutput();
-            game.roll(4);
-            game.answerIncorrectly();
-            game.roll(3);
-            game.answerIncorrectly();
-            game.roll(roll);
-            assertThat(game.answerCorrectly(), is(false));
+            game.move(4, answerIncorrectly);
+            game.move(3, answerIncorrectly);
+            assertThat(game.move(roll, answerCorrectly), is(false));
 
             assertThat(output(), contains(
                 equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
@@ -135,12 +137,9 @@ public class GameTest {
             game.add("Hobbes");
 
             flushOutput();
-            game.roll(4);
-            game.answerIncorrectly();
-            game.roll(3);
-            game.answerIncorrectly();
-            game.roll(roll);
-            assertThat(game.answerIncorrectly(), is(false));
+            game.move(4, answerIncorrectly);
+            game.move(3, answerIncorrectly);
+            assertThat(game.move(roll, answerIncorrectly), is(false));
 
             assertThat(output(), contains(
                 equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
@@ -165,12 +164,9 @@ public class GameTest {
             game.add("Hobbes");
 
             flushOutput();
-            game.roll(4);
-            game.answerIncorrectly();
-            game.roll(3);
-            game.answerIncorrectly();
-            game.roll(roll);
-            assertThat(game.answerCorrectly(), is(false));
+            game.move(4, answerIncorrectly);
+            game.move(3, answerIncorrectly);
+            assertThat(game.move(roll, answerCorrectly), is(false));
 
             assertThat(output(), contains(
                 "Calvin is the current player", "They have rolled a 4",
@@ -191,14 +187,14 @@ public class GameTest {
         game.add("Sherlock");
         game.add("John");
 
-        game.roll(2); game.answerCorrectly();      game.roll(1); game.answerCorrectly();
-        game.roll(0); game.answerIncorrectly();               game.roll(3); game.answerCorrectly();
-        game.roll(3); game.answerCorrectly();      game.roll(1); game.answerIncorrectly();
-        game.roll(2); game.answerCorrectly();      game.roll(2); game.answerIncorrectly();
-        game.roll(1); game.answerCorrectly();      game.roll(3); game.answerCorrectly();
-        game.roll(1); game.answerCorrectly();      game.roll(1); game.answerCorrectly();
+        game.move(2, answerCorrectly);      game.move(1, answerCorrectly);
+        game.move(0, answerIncorrectly);    game.move(3, answerCorrectly);
+        game.move(3, answerCorrectly);      game.move(1, answerIncorrectly);
+        game.move(2, answerCorrectly);      game.move(2, answerIncorrectly);
+        game.move(1, answerCorrectly);      game.move(3, answerCorrectly);
+        game.move(1, answerCorrectly);      game.move(1, answerCorrectly);
         flushOutput();
-        game.roll(0); assertThat(game.answerCorrectly(), is(true));
+        assertThat(game.move(0, answerCorrectly), is(true));
 
         System.err.println(output());
         assertThat(output(), contains(

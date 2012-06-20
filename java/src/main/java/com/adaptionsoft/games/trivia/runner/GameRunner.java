@@ -1,6 +1,8 @@
 package com.adaptionsoft.games.trivia.runner;
 
+import com.adaptionsoft.games.uglytrivia.Answerer;
 import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.uglytrivia.Question;
 import java.util.Random;
 
 public class GameRunner {
@@ -12,17 +14,18 @@ public class GameRunner {
         aGame.add("Pat");
         aGame.add("Sue");
 
-        Random rand = args.length > 0 ? new Random(Integer.valueOf(args[0])) : new Random();
-
+        final Random rand = args.length > 0 ? new Random(Integer.valueOf(args[0])) : new Random();
         boolean winner;
         do {
-            aGame.roll(rand.nextInt(5) + 1);
-
-            if (rand.nextInt(9) == 7) {
-                winner = aGame.answerIncorrectly();
-            } else {
-                winner = aGame.answerCorrectly();
-            }
+            winner = aGame.move(rand.nextInt(5) + 1, new Answerer() {
+                @Override public Answer answer(Question question) {
+                    if (rand.nextInt(9) == 7) {
+                        return Answer.Incorrect;
+                    } else {
+                        return Answer.Correct;
+                    }
+                }
+            });
         } while (!winner);
     }
 }
