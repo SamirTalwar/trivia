@@ -12,6 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 public class GameTest {
     private final PrintStream originalOut = System.out;
@@ -93,7 +94,7 @@ public class GameTest {
         game.wasCorrectlyAnswered();
         game.roll(1);
         game.wasCorrectlyAnswered();
-        game.roll(5);
+        game.roll(1);
         game.wrongAnswer();
 
         assertThat(output(), contains(
@@ -103,8 +104,8 @@ public class GameTest {
             "Hobbes is the current player", "They have rolled a 1",
             "Hobbes's new location is 1", "The category is Science", "Science Question 0",
             "Answer was corrent!!!!", "Hobbes now has 1 Gold Coins.",
-            "Calvin is the current player", "They have rolled a 5",
-            "Calvin's new location is 7", "The category is Rock", "Rock Question 0",
+            "Calvin is the current player", "They have rolled a 1",
+            "Calvin's new location is 3", "The category is Rock", "Rock Question 0",
             "Question was incorrectly answered", "Calvin was sent to the penalty box"
         ));
     }
@@ -163,6 +164,29 @@ public class GameTest {
                 "Calvin is not getting out of the penalty box"
             ));
         }
+    }
+
+    @Test public void
+    the_game_ends_when_a_player_has_six_golden_coins() {
+        Game game = new Game();
+        game.add("Sherlock");
+        game.add("John");
+
+        game.roll(2); game.wasCorrectlyAnswered();      game.roll(1); game.wasCorrectlyAnswered();
+        game.roll(0); game.wrongAnswer();               game.roll(3); game.wasCorrectlyAnswered();
+        game.roll(3); game.wasCorrectlyAnswered();      game.roll(1); game.wrongAnswer();
+        game.roll(2); game.wasCorrectlyAnswered();      game.roll(2); game.wrongAnswer();
+        game.roll(1); game.wasCorrectlyAnswered();      game.roll(3); game.wasCorrectlyAnswered();
+        game.roll(1); game.wasCorrectlyAnswered();      game.roll(1); game.wasCorrectlyAnswered();
+        flushOutput();
+        game.roll(0); assertThat(game.wasCorrectlyAnswered(), is(false));
+
+        System.err.println(output());
+        assertThat(output(), contains(
+            "Sherlock is the current player", "They have rolled a 0",
+            "Sherlock's new location is 9", "The category is Science", "Science Question 5",
+            "Answer was corrent!!!!", "Sherlock now has 6 Gold Coins."
+        ));
     }
 
     private Iterable<String> output() {
