@@ -47,9 +47,8 @@ public class Game {
 
                 out.println(player.name + " is getting out of the penalty box");
                 player.incrementPlaceBy(roll);
-
                 out.println(player.name + "'s new location is " + player.place());
-                out.println("The category is " + currentCategory());
+
                 askQuestion();
             } else {
                 out.println(player.name + " is not getting out of the penalty box");
@@ -57,9 +56,8 @@ public class Game {
             }
         } else {
             player.incrementPlaceBy(roll);
-
             out.println(player.name + "'s new location is " + player.place());
-            out.println("The category is " + currentCategory());
+
             askQuestion();
         }
     }
@@ -110,13 +108,15 @@ public class Game {
     }
 
     private void askQuestion() {
-        if (currentCategory() == "Pop")
+        String category = currentCategory();
+        out.println("The category is " + category);
+        if (category == "Pop")
             out.println(popQuestions.removeFirst());
-        if (currentCategory() == "Science")
+        if (category == "Science")
             out.println(scienceQuestions.removeFirst());
-        if (currentCategory() == "Sports")
+        if (category == "Sports")
             out.println(sportsQuestions.removeFirst());
-        if (currentCategory() == "Rock")
+        if (category == "Rock")
             out.println(rockQuestions.removeFirst());
     }
 
