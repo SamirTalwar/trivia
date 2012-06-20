@@ -8,10 +8,10 @@ import java.util.List;
 public class Game {
     private final List<Player> players = new ArrayList<>();
 
-    private final LinkedList<String> popQuestions = new LinkedList<>();
-    private final LinkedList<String> scienceQuestions = new LinkedList<>();
-    private final LinkedList<String> sportsQuestions = new LinkedList<>();
-    private final LinkedList<String> rockQuestions = new LinkedList<>();
+    private final LinkedList<Question> popQuestions = new LinkedList<>();
+    private final LinkedList<Question> scienceQuestions = new LinkedList<>();
+    private final LinkedList<Question> sportsQuestions = new LinkedList<>();
+    private final LinkedList<Question> rockQuestions = new LinkedList<>();
 
     private final PrintStream out;
 
@@ -21,10 +21,10 @@ public class Game {
     public Game(PrintStream out) {
         this.out = out;
         for (int i = 0; i < 50; i++) {
-            popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast("Science Question " + i);
-            sportsQuestions.addLast("Sports Question " + i);
-            rockQuestions.addLast("Rock Question " + i);
+            popQuestions.addLast(new Question("Pop Question " + i));
+            scienceQuestions.addLast(new Question("Science Question " + i));
+            sportsQuestions.addLast(new Question("Sports Question " + i));
+            rockQuestions.addLast(new Question("Rock Question " + i));
         }
     }
 
