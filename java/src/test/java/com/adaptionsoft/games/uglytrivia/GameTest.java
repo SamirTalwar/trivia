@@ -97,7 +97,7 @@ public class GameTest {
 
     @SuppressWarnings("unchecked")
     @Test public void
-    players_leave_the_penalty_box_when_they_roll_an_odd_number() {
+    players_attempt_to_leave_the_penalty_box_when_they_roll_an_odd_number() {
         for (int roll : collectionOf(1, 3)) {
             Game game = new Game(out);
             game.add("Calvin");
@@ -109,7 +109,7 @@ public class GameTest {
             game.roll(3);
             game.answerIncorrectly();
             game.roll(roll);
-            assertThat(game.answerIncorrectly(), is(true));
+            assertThat(game.answerCorrectly(), is(true));
 
             assertThat(output(), contains(
                 equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
@@ -121,7 +121,7 @@ public class GameTest {
                 equalTo("Calvin is the current player"), equalTo("They have rolled a " + roll),
                 equalTo("Calvin is getting out of the penalty box"),
                 equalTo("Calvin's new location is " + (roll + 4)), any(String.class), any(String.class),
-                equalTo("Question was incorrectly answered"), equalTo("Calvin was sent to the penalty box")
+                equalTo("Answer was correct!!!!"), equalTo("Calvin now has 1 Gold Coins.")
             ));
         }
     }

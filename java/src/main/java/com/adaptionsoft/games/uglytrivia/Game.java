@@ -93,9 +93,11 @@ public class Game {
 
     public boolean answerIncorrectly() {
         Player player = players.get(currentPlayer);
-        out.println("Question was incorrectly answered");
-        out.println(player.name + " was sent to the penalty box");
-        player.inPenaltyBox = true;
+        if (!player.inPenaltyBox || isGettingOutOfPenaltyBox) {
+            out.println("Question was incorrectly answered");
+            out.println(player.name + " was sent to the penalty box");
+            player.inPenaltyBox = true;
+        }
 
         nextPlayer();
         return true;
