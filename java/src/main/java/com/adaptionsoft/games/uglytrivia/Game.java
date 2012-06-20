@@ -23,19 +23,15 @@ public class Game {
             popQuestions.addLast("Pop Question " + i);
             scienceQuestions.addLast("Science Question " + i);
             sportsQuestions.addLast("Sports Question " + i);
-            rockQuestions.addLast(createRockQuestion(i));
+            rockQuestions.addLast("Rock Question " + i);
         }
-    }
-
-    private String createRockQuestion(int index) {
-        return "Rock Question " + index;
     }
 
     public boolean add(String playerName) {
         players.add(playerName);
-        places[howManyPlayers()] = 0;
-        purses[howManyPlayers()] = 0;
-        inPenaltyBox[howManyPlayers()] = false;
+        places[players.size()] = 0;
+        purses[players.size()] = 0;
+        inPenaltyBox[players.size()] = false;
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
@@ -114,10 +110,6 @@ public class Game {
         currentPlayer++;
         if (currentPlayer == players.size())
             currentPlayer = 0;
-    }
-
-    private int howManyPlayers() {
-        return players.size();
     }
 
     private void askQuestion() {
