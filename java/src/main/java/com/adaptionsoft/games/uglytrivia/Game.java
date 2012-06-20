@@ -62,7 +62,7 @@ public class Game {
         }
     }
 
-    public boolean wasCorrectlyAnswered() {
+    public boolean answerCorrectly() {
         Player player = players.get(currentPlayer);
         if (player.inPenaltyBox) {
             if (isGettingOutOfPenaltyBox) {
@@ -91,7 +91,7 @@ public class Game {
         }
     }
 
-    public boolean wrongAnswer() {
+    public boolean answerIncorrectly() {
         Player player = players.get(currentPlayer);
         out.println("Question was incorrectly answered");
         out.println(player.name + " was sent to the penalty box");
