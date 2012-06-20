@@ -126,6 +126,37 @@ public class GameTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Test public void
+    players_go_back_into_the_penalty_box_when_they_leave_but_get_the_question_wrong() {
+        for (int roll : collectionOf(1, 3)) {
+            Game game = new Game(out);
+            game.add("Calvin");
+            game.add("Hobbes");
+
+            flushOutput();
+            game.roll(4);
+            game.answerIncorrectly();
+            game.roll(3);
+            game.answerIncorrectly();
+            game.roll(roll);
+            assertThat(game.answerIncorrectly(), is(true));
+
+            assertThat(output(), contains(
+                equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
+                equalTo("Calvin's new location is 4"), equalTo("The category is Pop"), equalTo("Pop Question 0"),
+                equalTo("Question was incorrectly answered"), equalTo("Calvin was sent to the penalty box"),
+                equalTo("Hobbes is the current player"), equalTo("They have rolled a 3"),
+                equalTo("Hobbes's new location is 3"), equalTo("The category is Rock"), equalTo("Rock Question 0"),
+                equalTo("Question was incorrectly answered"), equalTo("Hobbes was sent to the penalty box"),
+                equalTo("Calvin is the current player"), equalTo("They have rolled a " + roll),
+                equalTo("Calvin is getting out of the penalty box"),
+                equalTo("Calvin's new location is " + (roll + 4)), any(String.class), any(String.class),
+                equalTo("Question was incorrectly answered"), equalTo("Calvin was sent to the penalty box")
+            ));
+        }
+    }
+
     @Test public void
     players_stay_in_the_penalty_box_when_they_roll_an_even_number() {
         for (int roll : collectionOf(0, 2)) {
