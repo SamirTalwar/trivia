@@ -101,30 +101,35 @@ public class Game {
     }
 
     private void askQuestion(Player player) {
-        String category = currentCategory(player);
+        Category category = currentCategory(player);
         out.println("The category is " + category);
-        if (category == "Pop")
+        if (category.is("Pop"))
             out.println(popQuestions.removeFirst());
-        if (category == "Science")
+        if (category.is("Science"))
             out.println(scienceQuestions.removeFirst());
-        if (category == "Sports")
+        if (category.is("Sports"))
             out.println(sportsQuestions.removeFirst());
-        if (category == "Rock")
+        if (category.is("Rock"))
             out.println(rockQuestions.removeFirst());
     }
 
-    private String currentCategory(Player player) {
+    private Category currentCategory(Player player) {
+        Category pop = new Category("Pop");
+        Category science = new Category("Science");
+        Category sports = new Category("Sports");
+        Category rock = new Category("Rock");
+
         int place = player.place();
-        if (place == 0) return "Pop";
-        if (place == 4) return "Pop";
-        if (place == 8) return "Pop";
-        if (place == 1) return "Science";
-        if (place == 5) return "Science";
-        if (place == 9) return "Science";
-        if (place == 2) return "Sports";
-        if (place == 6) return "Sports";
-        if (place == 10) return "Sports";
-        return "Rock";
+        if (place == 0) return pop;
+        if (place == 4) return pop;
+        if (place == 8) return pop;
+        if (place == 1) return science;
+        if (place == 5) return science;
+        if (place == 9) return science;
+        if (place == 2) return sports;
+        if (place == 6) return sports;
+        if (place == 10) return sports;
+        return rock;
     }
 
     private void showPlayerAnsweredTheQuestionCorrectly(Player player) {
