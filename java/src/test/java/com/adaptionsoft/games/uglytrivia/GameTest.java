@@ -3,12 +3,15 @@ package com.adaptionsoft.games.uglytrivia;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Collection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 
 public class GameTest {
     private final PrintStream originalOut = System.out;
@@ -106,11 +109,71 @@ public class GameTest {
         ));
     }
 
+    @SuppressWarnings("unchecked")
+    @Test public void
+    players_leave_the_penalty_box_when_they_roll_an_odd_number() {
+        for (int roll : collectionOf(1, 3)) {
+            Game game = new Game();
+            game.add("Calvin");
+            game.add("Hobbes");
+
+            flushOutput();
+            game.roll(4);
+            game.wrongAnswer();
+            game.roll(3);
+            game.wrongAnswer();
+            game.roll(roll);
+
+            assertThat(output(), contains(
+                equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
+                equalTo("Calvin's new location is 4"), equalTo("The category is Pop"), equalTo("Pop Question 0"),
+                equalTo("Question was incorrectly answered"), equalTo("Calvin was sent to the penalty box"),
+                equalTo("Hobbes is the current player"), equalTo("They have rolled a 3"),
+                equalTo("Hobbes's new location is 3"), equalTo("The category is Rock"), equalTo("Rock Question 0"),
+                equalTo("Question was incorrectly answered"), equalTo("Hobbes was sent to the penalty box"),
+                equalTo("Calvin is the current player"), equalTo("They have rolled a " + roll),
+                equalTo("Calvin is getting out of the penalty box"),
+                equalTo("Calvin's new location is " + (roll + 4)), any(String.class), any(String.class)
+            ));
+        }
+    }
+
+    @Test public void
+    players_stay_in_the_penalty_box_when_they_roll_an_even_number() {
+        for (int roll : collectionOf(0, 2)) {
+            Game game = new Game();
+            game.add("Calvin");
+            game.add("Hobbes");
+
+            flushOutput();
+            game.roll(4);
+            game.wrongAnswer();
+            game.roll(3);
+            game.wrongAnswer();
+            game.roll(roll);
+
+            assertThat(output(), contains(
+                "Calvin is the current player", "They have rolled a 4",
+                "Calvin's new location is 4", "The category is Pop", "Pop Question 0",
+                "Question was incorrectly answered", "Calvin was sent to the penalty box",
+                "Hobbes is the current player", "They have rolled a 3",
+                "Hobbes's new location is 3", "The category is Rock", "Rock Question 0",
+                "Question was incorrectly answered", "Hobbes was sent to the penalty box",
+                "Calvin is the current player", "They have rolled a " + roll,
+                "Calvin is not getting out of the penalty box"
+            ));
+        }
+    }
+
     private Iterable<String> output() {
         return Arrays.asList(outputStream.toString().replaceFirst("\n$", "").split("\n"));
     }
 
     private void flushOutput() {
         stub_STDOUT();
+    }
+
+    private static <T> Collection<T> collectionOf(@SuppressWarnings("unchecked") T... items) {
+        return Arrays.asList(items);
     }
 }
