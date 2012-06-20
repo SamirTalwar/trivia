@@ -21,14 +21,7 @@ public class Game {
             new Category("Rock")
     ));
 
-    private final PrintStream out;
-
-    private int currentPlayer = 0;
-    private boolean isGettingOutOfPenaltyBox;
-
-    public Game(PrintStream out) {
-        this.out = out;
-
+    {
         for (Category category : categories) {
             LinkedList<Question> categoryQuestions = new LinkedList<>();
             for (int i = 0; i < 50; i++) {
@@ -36,6 +29,15 @@ public class Game {
             }
             questions.put(category, categoryQuestions);
         }
+    }
+
+    private final PrintStream out;
+
+    private int currentPlayer = 0;
+    private boolean isGettingOutOfPenaltyBox;
+
+    public Game(PrintStream out) {
+        this.out = out;
     }
 
     public boolean add(String playerName) {
