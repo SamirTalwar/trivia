@@ -6,7 +6,12 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class PlayerTest {
-    private final Player player = new Player("Me");
+    private final Player player = new Player("Steve-O");
+
+    @Test public void
+    the_player_has_a_name() {
+        assertThat(player.name(), is("Steve-O"));
+    }
 
     @Test public void
     the_player_starts_at_position_zero() {
