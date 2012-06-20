@@ -73,13 +73,13 @@ public class GameTest {
         assertThat(output(), contains(
             "Fred is the current player", "They have rolled a 1",
             "Fred's new location is 1", "The category is Science", "Science Question 0",
-            "Answer was corrent!!!!", "Fred now has 1 Gold Coins.",
+            "Answer was correct!!!!", "Fred now has 1 Gold Coins.",
             "George is the current player", "They have rolled a 2",
             "George's new location is 2", "The category is Sports", "Sports Question 0",
-            "Answer was corrent!!!!", "George now has 1 Gold Coins.",
+            "Answer was correct!!!!", "George now has 1 Gold Coins.",
             "Ron is the current player", "They have rolled a 3",
             "Ron's new location is 3", "The category is Rock", "Rock Question 0",
-            "Answer was corrent!!!!", "Ron now has 1 Gold Coins."
+            "Answer was correct!!!!", "Ron now has 1 Gold Coins."
         ));
     }
 
@@ -100,10 +100,10 @@ public class GameTest {
         assertThat(output(), contains(
             "Calvin is the current player", "They have rolled a 2",
             "Calvin's new location is 2", "The category is Sports", "Sports Question 0",
-            "Answer was corrent!!!!", "Calvin now has 1 Gold Coins.",
+            "Answer was correct!!!!", "Calvin now has 1 Gold Coins.",
             "Hobbes is the current player", "They have rolled a 1",
             "Hobbes's new location is 1", "The category is Science", "Science Question 0",
-            "Answer was corrent!!!!", "Hobbes now has 1 Gold Coins.",
+            "Answer was correct!!!!", "Hobbes now has 1 Gold Coins.",
             "Calvin is the current player", "They have rolled a 1",
             "Calvin's new location is 3", "The category is Rock", "Rock Question 0",
             "Question was incorrectly answered", "Calvin was sent to the penalty box"
@@ -185,7 +185,7 @@ public class GameTest {
         assertThat(output(), contains(
             "Sherlock is the current player", "They have rolled a 0",
             "Sherlock's new location is 9", "The category is Science", "Science Question 5",
-            "Answer was corrent!!!!", "Sherlock now has 6 Gold Coins."
+            "Answer was correct!!!!", "Sherlock now has 6 Gold Coins."
         ));
     }
 
