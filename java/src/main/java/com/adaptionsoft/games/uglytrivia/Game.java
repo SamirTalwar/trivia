@@ -2,12 +2,13 @@ package com.adaptionsoft.games.uglytrivia;
 
 import com.adaptionsoft.games.uglytrivia.Answerer.Answer;
 import java.io.PrintStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -17,7 +18,7 @@ public class Game {
 
     private final List<Player> players = new ArrayList<>();
 
-    private final Map<Category, LinkedList<Question>> questions = new HashMap<>();
+    private final Map<Category, Queue<Question>> questions = new HashMap<>();
     private final List<Category> categories = unmodifiableList(Arrays.asList(
             new Category("Pop"),
             new Category("Science"),
@@ -27,9 +28,9 @@ public class Game {
 
     {
         for (Category category : categories) {
-            LinkedList<Question> categoryQuestions = new LinkedList<>();
+            Queue<Question> categoryQuestions = new ArrayDeque<>();
             for (int i = 0; i < 50; i++) {
-                categoryQuestions.addLast(new Question(category + " Question " + i));
+                categoryQuestions.add(new Question(category + " Question " + i));
             }
             questions.put(category, categoryQuestions);
         }
@@ -73,7 +74,7 @@ public class Game {
     private boolean askQuestion(Player player, Answerer answerer) {
         Category category = currentCategory(player);
         out.println("The category is " + category);
-        Question question = questions.get(category).removeFirst();
+        Question question = questions.get(category).poll();
         out.println(question);
         Answer answer = answerer.answer(question);
         if (answer == Answer.Correct) {
