@@ -64,8 +64,8 @@ public class Game {
                 movePlayerBy(roll, player);
                 askQuestion(player);
             } else {
-                out.println(player.name + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
+                out.println(player.name + " is not getting out of the penalty box");
             }
         } else {
             movePlayerBy(roll, player);
