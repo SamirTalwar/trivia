@@ -1,13 +1,17 @@
 package com.adaptionsoft.games.uglytrivia;
 
 public class Player {
-    public final String name;
+    private final String name;
     private int place = 0;
     private int purse = 0;
     private boolean isInPenaltyBox = false;
 
     public Player(String name) {
         this.name = name;
+    }
+
+    public String name() {
+        return name;
     }
 
     public int place() {

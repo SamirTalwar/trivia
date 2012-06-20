@@ -54,17 +54,17 @@ public class Game {
 
     public boolean move(int roll, Answerer answerer) {
         Player player = players.get(currentPlayer);
-        out.println(player.name + " is the current player");
+        out.println(player.name() + " is the current player");
         out.println("They have rolled a " + roll);
 
         if (player.isInPenaltyBox()) {
             if (roll % 2 == 0) {
-                out.println(player.name + " is not getting out of the penalty box");
+                out.println(player.name() + " is not getting out of the penalty box");
                 nextPlayer();
                 return false;
             }
 
-            out.println(player.name + " is getting out of the penalty box");
+            out.println(player.name() + " is getting out of the penalty box");
         }
 
         movePlayerBy(roll, player);
@@ -88,14 +88,14 @@ public class Game {
         player.moveOutOfPenaltyBox();
         out.println("Answer was correct!!!!");
         player.grantAGoldCoin();
-        out.println(player.name + " now has " + player.purse() + " Gold Coins.");
+        out.println(player.name() + " now has " + player.purse() + " Gold Coins.");
         nextPlayer();
         return player.hasWon();
     }
 
     private boolean answerIncorrectly(Player player) {
         out.println("Question was incorrectly answered");
-        out.println(player.name + " was sent to the penalty box");
+        out.println(player.name() + " was sent to the penalty box");
         player.moveIntoPenaltyBox();
         nextPlayer();
         return false;
@@ -109,7 +109,7 @@ public class Game {
 
     private void movePlayerBy(int roll, Player player) {
         player.incrementPlaceBy(roll);
-        out.println(player.name + "'s new location is " + player.place());
+        out.println(player.name() + "'s new location is " + player.place());
     }
 
     private Category currentCategory(Player player) {
