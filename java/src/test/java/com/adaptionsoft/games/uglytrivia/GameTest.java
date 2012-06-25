@@ -13,17 +13,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class GameTest {
-    private static final Answerer answerCorrectly = new Answerer() {
-        @Override public Answer answer(Question question) {
-            return Answer.Correct;
-        }
-    };
-    private static final Answerer answerIncorrectly = new Answerer() {
-        @Override public Answer answer(Question question) {
-            return Answer.Incorrect;
-        }
-    };
-
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private final PrintStream out = new PrintStream(outputStream);
 
@@ -173,7 +162,7 @@ public class GameTest {
         game.move(2, answerCorrectly);      game.move(1, answerCorrectly);
         game.move(0, answerIncorrectly);    game.move(3, answerCorrectly);
         game.move(3, answerCorrectly);      game.move(1, answerIncorrectly);
-        game.move(2, answerCorrectly);      game.move(2, answerIncorrectly);
+        game.move(2, answerCorrectly);      game.move(2, doNotAnswer);
         game.move(1, answerCorrectly);      game.move(3, answerCorrectly);
         game.move(1, answerCorrectly);      game.move(1, answerCorrectly);
         flushOutput();
@@ -198,4 +187,20 @@ public class GameTest {
     private static <T> Collection<T> collectionOf(@SuppressWarnings("unchecked") T... items) {
         return Arrays.asList(items);
     }
+
+    private static final Answerer answerCorrectly = new Answerer() {
+        @Override public Answer answer(Question question) {
+            return Answer.Correct;
+        }
+    };
+    private static final Answerer answerIncorrectly = new Answerer() {
+        @Override public Answer answer(Question question) {
+            return Answer.Incorrect;
+        }
+    };
+    private static final Answerer doNotAnswer = new Answerer() {
+        @Override public Answer answer(Question question) {
+            throw new IllegalStateException("This should never have been called.");
+        }
+    };
 }
