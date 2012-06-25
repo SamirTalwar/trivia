@@ -2,9 +2,11 @@ package com.adaptionsoft.games.uglytrivia;
 
 import com.adaptionsoft.games.uglytrivia.Answerer.Answer;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
 import java.io.PrintStream;
 import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -13,7 +15,7 @@ public class Game {
     public static final int PLACES = 12;
     public static final int GOLD_COINS_NEEDED_TO_WIN = 6;
 
-    private final List<Player> players;
+    private final Iterator<Player> players;
 
     private final Map<Category, Queue<Question>> questions = new HashMap<>();
     private final List<Category> categories = ImmutableList.of(
@@ -35,22 +37,19 @@ public class Game {
 
     private final PrintStream out;
 
-    private int currentPlayer = 0;
-
     public Game(PrintStream out, List<Player> players) {
         this.out = out;
-        this.players = ImmutableList.copyOf(players);
+        this.players = Iterators.cycle(ImmutableList.copyOf(players));
     }
 
     public boolean move(int roll, Answerer answerer) {
-        Player player = players.get(currentPlayer);
+        Player player = players.next();
         out.println(player.name() + " is the current player");
         out.println("They have rolled a " + roll);
 
         if (player.isInPenaltyBox()) {
             if (roll % 2 == 0) {
                 out.println(player.name() + " is not getting out of the penalty box");
-                nextPlayer();
                 return false;
             }
 
@@ -79,7 +78,6 @@ public class Game {
         player.grantAGoldCoin();
         out.println("Answer was correct!!!!");
         out.println(player.name() + " now has " + player.purse() + " Gold Coins.");
-        nextPlayer();
         return player.hasWon();
     }
 
@@ -87,15 +85,7 @@ public class Game {
         player.moveIntoPenaltyBox();
         out.println("Question was incorrectly answered");
         out.println(player.name() + " was sent to the penalty box");
-        nextPlayer();
         return false;
-    }
-
-    private void nextPlayer() {
-        currentPlayer++;
-        if (currentPlayer == players.size()) {
-            currentPlayer = 0;
-        }
     }
 
     private void movePlayerBy(int roll, Player player) {
