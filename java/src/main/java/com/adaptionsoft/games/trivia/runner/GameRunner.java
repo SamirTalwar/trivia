@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.trivia.runner;
 
+import com.adaptionsoft.games.uglytrivia.Answer;
+
 import com.adaptionsoft.games.uglytrivia.GameMaker;
 
 import com.adaptionsoft.games.uglytrivia.Answerer;

@@ -1,6 +1,5 @@
 package com.adaptionsoft.games.uglytrivia;
 
-import com.adaptionsoft.games.uglytrivia.Answerer.Answer;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import java.io.PrintStream;
@@ -67,25 +66,7 @@ public class Game {
         out.println("The category is " + category);
         out.println(question);
         Answer answer = answerer.answer(question);
-        if (answer == Answer.Correct) {
-            return answerCorrectly(player);
-        } else {
-            return answerIncorrectly(player);
-        }
-    }
-
-    private boolean answerCorrectly(Player player) {
-        player.grantAGoldCoin();
-        out.println("Answer was correct!!!!");
-        out.println(player.name() + " now has " + player.purse() + " Gold Coins.");
-        return player.hasWon();
-    }
-
-    private boolean answerIncorrectly(Player player) {
-        player.moveIntoPenaltyBox();
-        out.println("Question was incorrectly answered");
-        out.println(player.name() + " was sent to the penalty box");
-        return false;
+        return answer.dealWith(player, out);
     }
 
     private void movePlayerBy(int roll, Player player) {
