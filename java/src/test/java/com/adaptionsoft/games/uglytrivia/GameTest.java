@@ -110,7 +110,7 @@ public class GameTest {
     @SuppressWarnings("unchecked")
     @Test public void
     players_go_back_into_the_penalty_box_when_they_leave_but_get_the_question_wrong() {
-        for (int roll : collectionOf(1, 3)) {
+        for (int roll : collectionOf(1, 3, 5)) {
             GameMaker maker = new GameMaker(out);
             maker.add("Calvin");
             maker.add("Hobbes");
@@ -138,7 +138,7 @@ public class GameTest {
 
     @Test public void
     players_stay_in_the_penalty_box_when_they_roll_an_even_number() {
-        for (int roll : collectionOf(0, 2)) {
+        for (int roll : collectionOf(2, 4)) {
             GameMaker maker = new GameMaker(out);
             maker.add("Calvin");
             maker.add("Hobbes");
