@@ -94,7 +94,6 @@ public class Game {
     }
 
     private Category currentCategory(Player player) {
-        int place = player.place();
-        return categories.get(place % categories.size());
+        return categories.get(player.place() % categories.size());
     }
 }
