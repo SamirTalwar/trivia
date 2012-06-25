@@ -1,7 +1,7 @@
 package com.adaptionsoft.games.trivia.goldenmaster;
 
 import com.adaptionsoft.games.trivia.runner.GameRunner;
-import java.io.ByteArrayOutputStream;
+import com.adaptionsoft.games.uglytrivia.utils.StubOutput;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,13 +19,12 @@ import static org.hamcrest.Matchers.is;
 
 @RunWith(Theories.class)
 public class GoldenMasterTest {
-    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final PrintStream out = new PrintStream(outputStream);
+    private final StubOutput output = new StubOutput();
     private final PrintStream originalOut = System.out;
 
     @Before public void
     stub_STDOUT() {
-        System.setOut(out);
+        System.setOut(output.stream());
     }
 
     @After public void
@@ -47,7 +46,7 @@ public class GoldenMasterTest {
         String expectedOutput = new String(expectedOutputAsByteArray);
 
         GameRunner.main(new String[] {goldenMaster.getName().replaceFirst("\\.out$", "")});
-        String actualOutput = outputStream.toString();
+        String actualOutput = output.contentsAsString();
 
         assertThat(actualOutput, is(expectedOutput));
     }

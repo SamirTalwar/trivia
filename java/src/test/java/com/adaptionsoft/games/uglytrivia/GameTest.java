@@ -1,7 +1,6 @@
 package com.adaptionsoft.games.uglytrivia;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import com.adaptionsoft.games.uglytrivia.utils.StubOutput;
 import java.util.Arrays;
 import java.util.Collection;
 import org.junit.Test;
@@ -13,23 +12,22 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class GameTest {
-    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final PrintStream out = new PrintStream(outputStream);
+    private final StubOutput output = new StubOutput();
 
     @Test public void
     players_are_asked_questions() {
-        GameMaker maker = new GameMaker(out);
+        GameMaker maker = new GameMaker(output.stream());
         maker.add("Fred");
         maker.add("George");
         maker.add("Ron");
-        flushOutput();
+        output.flush();
 
         Game game = maker.makeGame();
         assertThat(game.move(1, answerCorrectly), is(false));
         assertThat(game.move(2, answerCorrectly), is(false));
         assertThat(game.move(3, answerCorrectly), is(false));
 
-        assertThat(output(), contains(
+        assertThat(output.contents(), contains(
             "Fred is the current player", "They have rolled a 1",
             "Fred's new location is 1", "The category is Science", "Science Question 0",
             "Answer was correct!!!!", "Fred now has 1 Gold Coins.",
@@ -44,17 +42,17 @@ public class GameTest {
 
     @Test public void
     players_are_sent_to_the_penalty_box_for_wrong_answers() {
-        GameMaker maker = new GameMaker(out);
+        GameMaker maker = new GameMaker(output.stream());
         maker.add("Calvin");
         maker.add("Hobbes");
-        flushOutput();
+        output.flush();
 
         Game game = maker.makeGame();
         assertThat(game.move(2, answerCorrectly), is(false));
         assertThat(game.move(1, answerCorrectly), is(false));
         assertThat(game.move(1, answerIncorrectly), is(false));
 
-        assertThat(output(), contains(
+        assertThat(output.contents(), contains(
             "Calvin is the current player", "They have rolled a 2",
             "Calvin's new location is 2", "The category is Sports", "Sports Question 0",
             "Answer was correct!!!!", "Calvin now has 1 Gold Coins.",
@@ -71,17 +69,17 @@ public class GameTest {
     @Test public void
     players_attempt_to_leave_the_penalty_box_when_they_roll_an_odd_number() {
         for (int roll : collectionOf(1, 3)) {
-            GameMaker maker = new GameMaker(out);
+            GameMaker maker = new GameMaker(output.stream());
             maker.add("Calvin");
             maker.add("Hobbes");
-            flushOutput();
+            output.flush();
 
             Game game = maker.makeGame();
             game.move(4, answerIncorrectly);
             game.move(3, answerIncorrectly);
             assertThat(game.move(roll, answerCorrectly), is(false));
 
-            assertThat(output(), contains(
+            assertThat(output.contents(), contains(
                 equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
                 equalTo("Calvin's new location is 4"), equalTo("The category is Pop"), equalTo("Pop Question 0"),
                 equalTo("Question was incorrectly answered"), equalTo("Calvin was sent to the penalty box"),
@@ -100,17 +98,17 @@ public class GameTest {
     @Test public void
     players_go_back_into_the_penalty_box_when_they_leave_but_get_the_question_wrong() {
         for (int roll : collectionOf(1, 3, 5)) {
-            GameMaker maker = new GameMaker(out);
+            GameMaker maker = new GameMaker(output.stream());
             maker.add("Calvin");
             maker.add("Hobbes");
-            flushOutput();
+            output.flush();
 
             Game game = maker.makeGame();
             game.move(4, answerIncorrectly);
             game.move(3, answerIncorrectly);
             assertThat(game.move(roll, answerIncorrectly), is(false));
 
-            assertThat(output(), contains(
+            assertThat(output.contents(), contains(
                 equalTo("Calvin is the current player"), equalTo("They have rolled a 4"),
                 equalTo("Calvin's new location is 4"), equalTo("The category is Pop"), equalTo("Pop Question 0"),
                 equalTo("Question was incorrectly answered"), equalTo("Calvin was sent to the penalty box"),
@@ -128,17 +126,17 @@ public class GameTest {
     @Test public void
     players_stay_in_the_penalty_box_when_they_roll_an_even_number() {
         for (int roll : collectionOf(2, 4)) {
-            GameMaker maker = new GameMaker(out);
+            GameMaker maker = new GameMaker(output.stream());
             maker.add("Calvin");
             maker.add("Hobbes");
-            flushOutput();
+            output.flush();
 
             Game game = maker.makeGame();
             game.move(4, answerIncorrectly);
             game.move(3, answerIncorrectly);
             assertThat(game.move(roll, answerCorrectly), is(false));
 
-            assertThat(output(), contains(
+            assertThat(output.contents(), contains(
                 "Calvin is the current player", "They have rolled a 4",
                 "Calvin's new location is 4", "The category is Pop", "Pop Question 0",
                 "Question was incorrectly answered", "Calvin was sent to the penalty box",
@@ -153,10 +151,10 @@ public class GameTest {
 
     @Test public void
     the_game_ends_when_a_player_has_six_golden_coins() {
-        GameMaker maker = new GameMaker(out);
+        GameMaker maker = new GameMaker(output.stream());
         maker.add("Sherlock");
         maker.add("John");
-        flushOutput();
+        output.flush();
 
         Game game = maker.makeGame();
         game.move(2, answerCorrectly);      game.move(1, answerCorrectly);
@@ -165,23 +163,15 @@ public class GameTest {
         game.move(2, answerCorrectly);      game.move(2, doNotAnswer);
         game.move(1, answerCorrectly);      game.move(3, answerCorrectly);
         game.move(1, answerCorrectly);      game.move(1, answerCorrectly);
-        flushOutput();
+        output.flush();
         assertThat(game.move(0, answerCorrectly), is(true));
 
-        System.err.println(output());
-        assertThat(output(), contains(
+        System.err.println(output.contents());
+        assertThat(output.contents(), contains(
             "Sherlock is the current player", "They have rolled a 0",
             "Sherlock's new location is 9", "The category is Science", "Science Question 5",
             "Answer was correct!!!!", "Sherlock now has 6 Gold Coins."
         ));
-    }
-
-    private Iterable<String> output() {
-        return Arrays.asList(outputStream.toString().replaceFirst("\n$", "").split("\n"));
-    }
-
-    private void flushOutput() {
-        outputStream.reset();
     }
 
     private static <T> Collection<T> collectionOf(@SuppressWarnings("unchecked") T... items) {
