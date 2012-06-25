@@ -57,6 +57,7 @@ public class Game {
             }
 
             out.println(player.name() + " is getting out of the penalty box");
+            player.moveOutOfPenaltyBox();
         }
 
         movePlayerBy(roll, player);
@@ -65,8 +66,8 @@ public class Game {
 
     private boolean askQuestion(Player player, Answerer answerer) {
         Category category = currentCategory(player);
-        out.println("The category is " + category);
         Question question = questions.get(category).poll();
+        out.println("The category is " + category);
         out.println(question);
         Answer answer = answerer.answer(question);
         if (answer == Answer.Correct) {
@@ -77,18 +78,17 @@ public class Game {
     }
 
     private boolean answerCorrectly(Player player) {
-        player.moveOutOfPenaltyBox();
-        out.println("Answer was correct!!!!");
         player.grantAGoldCoin();
+        out.println("Answer was correct!!!!");
         out.println(player.name() + " now has " + player.purse() + " Gold Coins.");
         nextPlayer();
         return player.hasWon();
     }
 
     private boolean answerIncorrectly(Player player) {
+        player.moveIntoPenaltyBox();
         out.println("Question was incorrectly answered");
         out.println(player.name() + " was sent to the penalty box");
-        player.moveIntoPenaltyBox();
         nextPlayer();
         return false;
     }
