@@ -1,10 +1,10 @@
 package com.adaptionsoft.games.uglytrivia;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import java.io.PrintStream;
 import java.util.ArrayDeque;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,25 +14,15 @@ public class Game {
     public static final int PLACES = 12;
     public static final int GOLD_COINS_NEEDED_TO_WIN = 6;
 
-    private final Iterator<Player> players;
-
-    private final Map<Category, Queue<Question>> questions = new HashMap<>();
     private final List<Category> categories = ImmutableList.of(
             new Category("Pop"),
             new Category("Science"),
             new Category("Sports"),
             new Category("Rock")
     );
+    private final Map<Category, Queue<Question>> questions = createQuestions();
 
-    {
-        for (Category category : categories) {
-            Queue<Question> categoryQuestions = new ArrayDeque<>();
-            for (int i = 0; i < 50; i++) {
-                categoryQuestions.add(new Question(category + " Question " + i));
-            }
-            questions.put(category, categoryQuestions);
-        }
-    }
+    private final Iterator<Player> players;
 
     private final PrintStream out;
 
@@ -76,5 +66,17 @@ public class Game {
 
     private Category currentCategory(Player player) {
         return categories.get(player.place() % categories.size());
+    }
+
+    private Map<Category, Queue<Question>> createQuestions() {
+        ImmutableMap.Builder<Category, Queue<Question>> questionsBuilder = ImmutableMap.builder();
+        for (Category category : categories) {
+            Queue<Question> categoryQuestions = new ArrayDeque<>();
+            for (int i = 0; i < 50; i++) {
+                categoryQuestions.add(new Question(category + " Question " + i));
+            }
+            questionsBuilder.put(category, categoryQuestions);
+        }
+        return questionsBuilder.build();
     }
 }
