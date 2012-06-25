@@ -51,7 +51,7 @@ public class Game {
     }
 
     private boolean askQuestion(Player player, Answerer answerer) {
-        Category category = currentCategory(player);
+        Category category = categories.get(player.place() % categories.size());
         Question question = questions.get(category).poll();
         category.writeTo(out);
         question.writeTo(out);
@@ -62,10 +62,6 @@ public class Game {
     private void movePlayerBy(int roll, Player player) {
         player.incrementPlaceBy(roll);
         out.println(player.name() + "'s new location is " + player.place());
-    }
-
-    private Category currentCategory(Player player) {
-        return categories.get(player.place() % categories.size());
     }
 
     private Map<Category, Queue<Question>> createQuestions() {
