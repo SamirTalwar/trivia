@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.trivia.runner;
 
+import com.adaptionsoft.games.uglytrivia.GameMaker;
+
 import com.adaptionsoft.games.uglytrivia.Answerer;
 import com.adaptionsoft.games.uglytrivia.Game;
 import com.adaptionsoft.games.uglytrivia.Question;
@@ -8,11 +10,12 @@ import java.util.Random;
 public class GameRunner {
 
     public static void main(String[] args) {
-        Game aGame = new Game(System.out);
+        GameMaker maker = new GameMaker(System.out);
+        maker.add("Chet");
+        maker.add("Pat");
+        maker.add("Sue");
 
-        aGame.add("Chet");
-        aGame.add("Pat");
-        aGame.add("Sue");
+        Game aGame = maker.makeGame();
 
         final Random rand = args.length > 0 ? new Random(Integer.valueOf(args[0])) : new Random();
         boolean winner;

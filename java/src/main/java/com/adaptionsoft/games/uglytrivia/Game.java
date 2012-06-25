@@ -3,7 +3,6 @@ package com.adaptionsoft.games.uglytrivia;
 import com.adaptionsoft.games.uglytrivia.Answerer.Answer;
 import java.io.PrintStream;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,7 @@ public class Game {
     public static final int PLACES = 12;
     public static final int GOLD_COINS_NEEDED_TO_WIN = 6;
 
-    private final List<Player> players = new ArrayList<>();
+    private final List<Player> players;
 
     private final Map<Category, Queue<Question>> questions = new HashMap<>();
     private final List<Category> categories = unmodifiableList(Arrays.asList(
@@ -40,16 +39,9 @@ public class Game {
 
     private int currentPlayer = 0;
 
-    public Game(PrintStream out) {
+    public Game(PrintStream out, List<Player> players) {
         this.out = out;
-    }
-
-    public boolean add(String playerName) {
-        players.add(new Player(playerName));
-
-        out.println(playerName + " was added");
-        out.println("They are player number " + players.size());
-        return true;
+        this.players = players;
     }
 
     public boolean move(int roll, Answerer answerer) {

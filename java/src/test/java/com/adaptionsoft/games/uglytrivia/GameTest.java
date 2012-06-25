@@ -28,37 +28,14 @@ public class GameTest {
     private final PrintStream out = new PrintStream(outputStream);
 
     @Test public void
-    adds_a_new_player() {
-        Game game = new Game(out);
-        game.add("Bob");
-        assertThat(output(), contains("Bob was added", "They are player number 1"));
-    }
-
-    @Test public void
-    adds_multiple_players() {
-        Game game = new Game(out);
-        game.add("Julian");
-        game.add("Dick");
-        game.add("George");
-        game.add("Anne");
-        game.add("Timmy");
-        assertThat(output(), contains(
-            "Julian was added", "They are player number 1",
-            "Dick was added", "They are player number 2",
-            "George was added", "They are player number 3",
-            "Anne was added", "They are player number 4",
-            "Timmy was added", "They are player number 5"
-        ));
-    }
-
-    @Test public void
     players_are_asked_questions() {
-        Game game = new Game(out);
-        game.add("Fred");
-        game.add("George");
-        game.add("Ron");
-
+        GameMaker maker = new GameMaker(out);
+        maker.add("Fred");
+        maker.add("George");
+        maker.add("Ron");
         flushOutput();
+
+        Game game = maker.makeGame();
         assertThat(game.move(1, answerCorrectly), is(false));
         assertThat(game.move(2, answerCorrectly), is(false));
         assertThat(game.move(3, answerCorrectly), is(false));
@@ -78,11 +55,12 @@ public class GameTest {
 
     @Test public void
     players_are_sent_to_the_penalty_box_for_wrong_answers() {
-        Game game = new Game(out);
-        game.add("Calvin");
-        game.add("Hobbes");
-
+        GameMaker maker = new GameMaker(out);
+        maker.add("Calvin");
+        maker.add("Hobbes");
         flushOutput();
+
+        Game game = maker.makeGame();
         assertThat(game.move(2, answerCorrectly), is(false));
         assertThat(game.move(1, answerCorrectly), is(false));
         assertThat(game.move(1, answerIncorrectly), is(false));
@@ -104,11 +82,12 @@ public class GameTest {
     @Test public void
     players_attempt_to_leave_the_penalty_box_when_they_roll_an_odd_number() {
         for (int roll : collectionOf(1, 3)) {
-            Game game = new Game(out);
-            game.add("Calvin");
-            game.add("Hobbes");
-
+            GameMaker maker = new GameMaker(out);
+            maker.add("Calvin");
+            maker.add("Hobbes");
             flushOutput();
+
+            Game game = maker.makeGame();
             game.move(4, answerIncorrectly);
             game.move(3, answerIncorrectly);
             assertThat(game.move(roll, answerCorrectly), is(false));
@@ -132,11 +111,12 @@ public class GameTest {
     @Test public void
     players_go_back_into_the_penalty_box_when_they_leave_but_get_the_question_wrong() {
         for (int roll : collectionOf(1, 3)) {
-            Game game = new Game(out);
-            game.add("Calvin");
-            game.add("Hobbes");
-
+            GameMaker maker = new GameMaker(out);
+            maker.add("Calvin");
+            maker.add("Hobbes");
             flushOutput();
+
+            Game game = maker.makeGame();
             game.move(4, answerIncorrectly);
             game.move(3, answerIncorrectly);
             assertThat(game.move(roll, answerIncorrectly), is(false));
@@ -159,11 +139,12 @@ public class GameTest {
     @Test public void
     players_stay_in_the_penalty_box_when_they_roll_an_even_number() {
         for (int roll : collectionOf(0, 2)) {
-            Game game = new Game(out);
-            game.add("Calvin");
-            game.add("Hobbes");
-
+            GameMaker maker = new GameMaker(out);
+            maker.add("Calvin");
+            maker.add("Hobbes");
             flushOutput();
+
+            Game game = maker.makeGame();
             game.move(4, answerIncorrectly);
             game.move(3, answerIncorrectly);
             assertThat(game.move(roll, answerCorrectly), is(false));
@@ -183,10 +164,12 @@ public class GameTest {
 
     @Test public void
     the_game_ends_when_a_player_has_six_golden_coins() {
-        Game game = new Game(out);
-        game.add("Sherlock");
-        game.add("John");
+        GameMaker maker = new GameMaker(out);
+        maker.add("Sherlock");
+        maker.add("John");
+        flushOutput();
 
+        Game game = maker.makeGame();
         game.move(2, answerCorrectly);      game.move(1, answerCorrectly);
         game.move(0, answerIncorrectly);    game.move(3, answerCorrectly);
         game.move(3, answerCorrectly);      game.move(1, answerIncorrectly);
