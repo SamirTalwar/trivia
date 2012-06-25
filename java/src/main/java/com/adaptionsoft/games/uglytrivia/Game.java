@@ -63,8 +63,8 @@ public class Game {
     private boolean askQuestion(Player player, Answerer answerer) {
         Category category = currentCategory(player);
         Question question = questions.get(category).poll();
-        out.println("The category is " + category);
-        out.println(question);
+        category.writeTo(out);
+        question.writeTo(out);
         Answer answer = answerer.answer(question);
         return answer.dealWith(player, out);
     }

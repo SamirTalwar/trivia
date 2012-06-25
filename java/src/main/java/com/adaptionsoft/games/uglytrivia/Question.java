@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import java.io.PrintStream;
+
 public class Question {
     private final String question;
 
@@ -7,8 +9,7 @@ public class Question {
         this.question = question;
     }
 
-    @Override
-    public String toString() {
-        return question;
+    public void writeTo(PrintStream out) {
+        out.println(question);
     }
 }

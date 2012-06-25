@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import java.io.PrintStream;
+
 public class Category {
     private final String category;
 
@@ -28,5 +30,9 @@ public class Category {
     @Override
     public String toString() {
         return category;
+    }
+
+    public void writeTo(PrintStream out) {
+        out.println("The category is " + category);
     }
 }
