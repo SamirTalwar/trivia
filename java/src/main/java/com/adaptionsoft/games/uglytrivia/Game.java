@@ -1,15 +1,13 @@
 package com.adaptionsoft.games.uglytrivia;
 
 import com.adaptionsoft.games.uglytrivia.Answerer.Answer;
+import com.google.common.collect.ImmutableList;
 import java.io.PrintStream;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-
-import static java.util.Collections.unmodifiableList;
 
 public class Game {
     public static final int PLACES = 12;
@@ -18,12 +16,12 @@ public class Game {
     private final List<Player> players;
 
     private final Map<Category, Queue<Question>> questions = new HashMap<>();
-    private final List<Category> categories = unmodifiableList(Arrays.asList(
+    private final List<Category> categories = ImmutableList.of(
             new Category("Pop"),
             new Category("Science"),
             new Category("Sports"),
             new Category("Rock")
-    ));
+    );
 
     {
         for (Category category : categories) {
@@ -41,7 +39,7 @@ public class Game {
 
     public Game(PrintStream out, List<Player> players) {
         this.out = out;
-        this.players = unmodifiableList(players);
+        this.players = ImmutableList.copyOf(players);
     }
 
     public boolean move(int roll, Answerer answerer) {
