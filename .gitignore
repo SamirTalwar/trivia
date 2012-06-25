@@ -1,5 +1,6 @@
 java/.classpath
 java/.project
+java/.settings
 java/target
 scala/.idea
 scala/scala.iml
