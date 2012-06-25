@@ -41,7 +41,7 @@ public class Game {
 
     public Game(PrintStream out, List<Player> players) {
         this.out = out;
-        this.players = players;
+        this.players = unmodifiableList(players);
     }
 
     public boolean move(int roll, Answerer answerer) {
